@@ -1,5 +1,11 @@
 FROM ubuntu:18.04
 RUN apt-get update && \
+	apt-get update -y && \
+	apt-get install -y make && \
+	apt-get install -y libxml2-dev && \
+	apt-get install -y m4 && \
+	apt-get install nano && \
+	apt install -y build-essential git tree && \
 	apt-get install -y wget tar apt-utils autoconf automake build-essential git libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre++-dev libtool libxml2-dev libssl-dev libyajl-dev pkgconf zlib1g-dev && \
 	git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity && \
 	cd ModSecurity && \
@@ -28,7 +34,7 @@ COPY nginx.conf /usr/local/nginx/nginx.conf
 COPY modsec_includes.conf /usr/local/nginx/modsec_includes.conf
 COPY modsecurity.conf /usr/local/nginx/modsecurity.conf
 COPY crs-setup.conf /usr/local/nginx/crs-setup.conf
-CMD nginx -g 'daemon off;'
+CMD  /usr/local/nginx/sbin/nginx -g 'daemon off;'
 EXPOSE 80
 	
 	
