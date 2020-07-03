@@ -33,12 +33,15 @@ RUN apt-get update && \
 	mv /usr/local/nginx/conf/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example  /usr/local/nginx/conf/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf && \
 	apt-get remove -y --purge apt-utils autoconf automake build-essential git pkgconf && \
 	apt-get autoremove -y 
-
+RUN cp /nginx-1.18.0/conf/mime.types /usr/local/nginx/mime.types 
+RUN cp /ModSecurity/unicode.mapping /usr/local/nginx/unicode.mapping
+RUN cp -R /usr/local/nginx/conf/rules /usr/local/nginx/
 COPY nginx.conf /usr/local/nginx/nginx.conf
 COPY modsec_includes.conf /usr/local/nginx/modsec_includes.conf
 COPY modsecurity.conf /usr/local/nginx/modsecurity.conf
-COPY crs-setup.conf /usr/local/nginx/crs-setup.conf
-CMD  /usr/local/nginx/sbin/nginx -g 'daemon off;'
+#COPY crs-setup.conf /usr/local/nginx/crs-setup.conf 
+COPY crs-setup.conf /usr/local/nginx/rules/crs-setup.conf  
+CMD  cd /usr/local/nginx && ./sbin/nginx -c /usr/local/nginx/nginx.conf   -g  'daemon off;'
 EXPOSE 80
 	
 	
