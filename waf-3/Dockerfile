@@ -1,10 +1,13 @@
-FROM ubuntu:18.04
+FROM bochuxt/nginx-modsecurity-1.18-3.0:base1
+#ubuntu:18.04
 RUN apt-get update && \
 	apt-get update -y && \
 	apt-get install -y make && \
-	apt-get install -y libxml2-dev && \
 	apt-get install -y m4 && \
 	apt-get install nano && \
+	apt-get purge -y -f libxml2-dev && \
+    apt-get update && \
+    apt-get install -y libxml2 libxml2-dev && \
 	apt install -y build-essential git tree && \
 	apt-get install -y wget tar apt-utils autoconf automake build-essential git libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre++-dev libtool libxml2-dev libssl-dev libyajl-dev pkgconf zlib1g-dev && \
 	git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity && \
@@ -29,7 +32,8 @@ RUN apt-get update && \
 	mv /usr/local/nginx/conf/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example  /usr/local/nginx/conf/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf && \
 	mv /usr/local/nginx/conf/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example  /usr/local/nginx/conf/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf && \
 	apt-get remove -y --purge apt-utils autoconf automake build-essential git pkgconf && \
-	apt-get autoremove -y
+	apt-get autoremove -y 
+
 COPY nginx.conf /usr/local/nginx/nginx.conf
 COPY modsec_includes.conf /usr/local/nginx/modsec_includes.conf
 COPY modsecurity.conf /usr/local/nginx/modsecurity.conf
