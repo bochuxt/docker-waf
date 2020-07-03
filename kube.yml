@@ -44,7 +44,7 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
-  type: ClusterIP	
+  type: ClusterIP
 ---
 apiVersion: apps/v1 
 kind: Deployment #Deployment for the app
@@ -64,4 +64,4 @@ spec:
       - name: waf
         image: your.container.registry/app #insert the reference to your image here.
         ports:
-        - containerPort: 80			
+        - containerPort: 80
